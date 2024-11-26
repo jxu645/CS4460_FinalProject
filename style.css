@@ -1,0 +1,34 @@
+body {
+    font: 12px sans-serif;
+}
+
+#legend {
+    font: 12px sans-serif;
+}
+
+.tick>line {
+    fill: none;
+    stroke: black;
+}
+
+.tick>text {
+    fill: black;
+}
+
+path.domain {
+    fill: none;
+    stroke-width: 2px;
+    stroke: black;
+}
+
+#wrapper {
+    clear: both;
+}
+
+#chart1 {
+    float: left;
+}
+
+#chart2 {
+    float: left;
+}
