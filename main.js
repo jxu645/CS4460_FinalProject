@@ -119,7 +119,7 @@ Dots are colored based on region
 
     
     chart2.append("text")
-    .attr("transform", "translate(270,40)") 
+    .attr("transform", "translate(175,40)") 
     .text("Colleges Acceptance Rate vs SAT Average");
     
 
@@ -190,8 +190,100 @@ Dots are colored based on region
     });
 
 
+    d3
+    .select("#newEngland")
+    .append("circle")
+    .attr("cx", 6 )
+    .attr("cy", 6)
+    .attr("r", 5)
+    .attr("class", "newengland")
+    .attr("stroke-width", 1)
+    .attr("stroke", "black");
+
+    d3
+    .select("#midAtlantic")
+    .append("circle")
+    .attr("cx", 6 )
+    .attr("cy", 6)
+    .attr("r", 5)
+    .attr("class", "midatlantic")
+    .attr("stroke-width", 1)
+    .attr("stroke", "black");
+
+    d3
+    .select("#southEast")
+    .append("circle")
+    .attr("cx", 6 )
+    .attr("cy", 6)
+    .attr("r", 5)
+    .attr("class", "southeast")
+    .attr("stroke-width", 1)
+    .attr("stroke", "black");
+
+    d3
+    .select("#greatLakes")
+    .append("circle")
+    .attr("cx", 6 )
+    .attr("cy", 6)
+    .attr("r", 5)
+    .attr("class", "greatLakes")
+    .attr("stroke-width", 1)
+    .attr("stroke", "black");
+
+    d3
+    .select("#greatPlains")
+    .append("circle")
+    .attr("cx", 6 )
+    .attr("cy", 6)
+    .attr("r", 5)
+    .attr("class", "greatPlains")
+    .attr("stroke-width", 1)
+    .attr("stroke", "black");
+
+    d3
+    .select("#rockY")
+    .append("circle")
+    .attr("cx", 6 )
+    .attr("cy", 6)
+    .attr("r", 5)
+    .attr("class", "rocky")
+    .attr("stroke-width", 1)
+    .attr("stroke", "black");
+
+    d3
+    .select("#southWest")
+    .append("circle")
+    .attr("cx", 6 )
+    .attr("cy", 6)
+    .attr("r", 5)
+    .attr("class", "southwest")
+    .attr("stroke-width", 1)
+    .attr("stroke", "black");
+
+    d3
+    .select("#farWest")
+    .append("circle")
+    .attr("cx", 6 )
+    .attr("cy", 6)
+    .attr("r", 5)
+    .attr("class", "farWest")
+    .attr("stroke-width", 1)
+    .attr("stroke", "black");
+
+    d3
+    .select("#outLying")
+    .append("circle")
+    .attr("cx", 6 )
+    .attr("cy", 6)
+    .attr("r", 5)
+    .attr("class", "outlying")
+    .attr("stroke-width", 1)
+    .attr("stroke", "black");
+
+
 
 
 
     console.log(csv);
 })
+
