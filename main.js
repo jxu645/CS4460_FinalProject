@@ -19,5 +19,179 @@ d3.csv("colleges.csv").then(function (csv) {
         d.SATScore = +d["SAT Average"]; // Column: "SAT Average" -> convert to numeric
     });
 
+    var chart2 = d3
+    .select("#chart2")
+    .append("svg:svg")
+    .attr("id", "svg2")
+    .attr("width", width)
+    .attr("height", height);
+
+
+
+/**
+Detials on demand (hovering? Clicking?)
+Acceptance rate vs SAT Score
+Dots are colored based on region
+*/
+
+    function scaleAccept(AcceptanceRate) { // formerlly attack
+        return acceptScale(AcceptanceRate);
+    }
+
+    function scaleSAT(SATScore) { //formerly defense
+        return satScale(SATScore);
+    }
+/*
+    function scaleSpeed(speed) {
+        return speedScale(speed);
+    }*/
+    
+
+    // **** Start of Code for creating scales for axes and data plotting****
+
+    var acceptScale = d3.scaleLinear()
+        .domain(d3.extent(csv, d => d.AcceptanceRate))
+        .range([50, 450]);
+
+    var satScale = d3.scaleLinear()
+        .domain(d3.extent(csv, d => d.SATScore))
+        .range([450, 50])
+
+    // Scale for the speed attribute, mapping to a radius range
+   /* var speedScale = d3.scaleLinear()
+        .domain(d3.extent(data, d => d.speed))
+        .range([3, 10]);*/
+
+    var svg = d3.select('svg');
+
+    
+
+    // **** End of Code for creating scales for axes and data plotting****
+
+    var tooltip = d3.select('#chart2')
+        .append('div')
+		.attr('class', 'tooltip')
+		.style('position', 'absolute')
+		.style('background-color', 'white')
+		.style('border', '1px solid black')
+		.style('padding', '5px')
+		.style('border-radius', '5px')
+		.style('opacity', 0); // Start with opacity 0 to keep it hidden
+
+    // X-axis - Append to svg (axis and label)
+
+    var x_axis = d3.axisBottom(acceptScale); 
+
+    chart2.append('g')
+    .attr("width", width) 
+    .attr("height", height)
+    .attr('class', 'x axis')
+    .attr("transform", "translate(0,450)") 
+    .call(x_axis);
+
+    chart2.append("text")
+    .attr('class', 'x axis')
+    .attr("transform", "translate(225,475)") 
+    .text("Acceptance Rate");
+
+    
+
+    // Y-axis - Append to svg (axis and label)
+
+    
+    var y_axis = d3.axisLeft(satScale); 
+
+    chart2.append('g')
+    .attr("width", width) 
+    .attr("height", height)
+    .attr('class', 'y axis')
+    .attr("transform", "translate(50,0) ") 
+    .text("y Axis")
+    //.attr("transform", "rotate(90)") 
+     .call(y_axis) ;
+
+     chart2.append("text")
+     .attr('class', 'y axis')
+     .attr("transform", "rotate(90) translate(170, 0) ")
+     .text("SAT Average");
+
+    // Title - Append to svg
+
+    
+    chart2.append("text")
+    .attr("transform", "translate(270,40)") 
+    .text("Colleges Acceptance Rate vs SAT Average");
+    
+
+    // Plot the points & scale radius by speed - Enter and append
+    var highSpeed = 100;
+    chart2.append('g')
+    .selectAll("dot")
+    .data(csv)
+    .enter()
+
+    .append("circle")
+    .attr("cx", function (d) { return scaleAccept(d.AcceptanceRate); } )
+    .attr("cy", function (d) { return scaleSAT(d.SATScore); } )
+    .attr("r", 5)
+      //.attr("r", function (d) { return scaleSpeed(d.Speed); })
+    //.style("fill" ,"steelblue")
+  //  .style('fill', function(d) {
+    //    return d.Speed > highSpeed ? '#FFD700' : 'steelblue';
+   // })
+    //.style("opacity" ,"0.7")
+    .on('mouseover', function(event, i) {
+        const a = csv[i]; // Use 'i' as an index to access the correct object
+        //console.log(csv)
+        //console.log(i)
+        //console.log(a)
+        const cx = scaleAccept(i["Admission Rate"]);// TO-DO: Get the x-position for the tooltip
+        const cy = scaleSAT(i["SAT Average"]);// TO-DO: Get the y-position for the tooltip
+        //const pointer = d3.pointer(event);
+        // TO-DO: Style the tooltip correctly.
+        var htmlText = "";
+       // if (d["Type 2"] == '') {
+        htmlText = "<b>" + i.Name + "</b><br\>" + "Cost: $" + i.Cost;
+      //  } else {
+           // htmlText = "<b>" + d.Name + "</b><br\>" + "Type 1: " + d["Type 1"] + "<br\>" + "Type 2: " + d["Type 2"];
+       // }
+       // console.log(event.pageX)
+        tooltip
+        .attr("class", "tooltip")
+        .html(`${htmlText}`)
+        .style("Left", event.pageX+25 + "px")
+        .style("Top", event.pageY-35 + "px")
+        .style("opacity", "1.0")
+        .style("position", "absolute")
+    }).on('mouseout', function() {
+        // TO-DO: Hide the tooltip when not hovering
+        return tooltip.style("opacity", "0.0");
+    })
+    .attr("class", d => {
+        if (d.Region == "Outlying Areas"){
+            return "outlying";
+        } else if (d.Region == "New England") {
+            return "newengland";
+        } else if (d.Region == "Mid-Atlantic") {
+            return "midatlantic";
+        } else if (d.Region == "Southeast") {
+            return "southeast";
+        } else if (d.Region == "Great Lakes") {
+            return "greatLakes";
+        } else if (d.Region == "Great Plains") {
+            return "greatPlains";
+        } else if (d.Region == "Rocky Mountains") {
+            return "rocky";
+        } else if (d.Region == "Southwest") {
+            return "southwest";
+        } else {
+            return "farWest";
+        } 
+    });
+
+
+
+
+
     console.log(csv);
 })

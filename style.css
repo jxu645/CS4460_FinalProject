@@ -32,3 +32,40 @@ path.domain {
 #chart2 {
     float: left;
 }
+
+
+.newengland{
+    fill: #005eff
+}
+
+.midatlantic {
+    fill: #4288ff
+}
+
+
+.southeast{
+    fill: #6ea3ff
+}
+
+.greatLakes{
+    fill: #B4CEFF
+}
+.greatPlains{
+    fill: #F1B4FF
+}
+
+.rocky{
+    fill: #E679FF
+}
+
+.southwest{
+    fill: #DD46FF
+}
+
+.farWest {
+    fill: #D103FF
+    
+}
+.outlying{
+    fill: #000000
+}
