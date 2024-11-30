@@ -33,6 +33,14 @@ path.domain {
     float: left;
 }
 
+.custom-select {
+    font-size: 16px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    background-color: #ffffff;
+    cursor: pointer;
+}
 
 .newengland{
     fill: #005eff
