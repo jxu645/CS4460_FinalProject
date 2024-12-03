@@ -26,8 +26,6 @@ d3.csv("colleges.csv").then(function (csv) {
     .attr("width", width)
     .attr("height", height);
 
-
-
 /**
 Detials on demand (hovering? Clicking?)
 Acceptance rate vs SAT Score
@@ -93,8 +91,6 @@ Dots are colored based on region
     .attr('class', 'x axis')
     .attr("transform", "translate(225,475)") 
     .text("Acceptance Rate");
-
-    
 
     // Y-axis - Append to svg (axis and label)
 
