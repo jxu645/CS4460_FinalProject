@@ -41,10 +41,10 @@ Dots are colored based on region
     function scaleSAT(SATScore) { //formerly defense
         return satScale(SATScore);
     }
-/*
-    function scaleSpeed(speed) {
-        return speedScale(speed);
-    }*/
+
+    function scaleCost(speed) {
+        return costScale(speed);
+    }
     
 
     // **** Start of Code for creating scales for axes and data plotting****
@@ -58,9 +58,9 @@ Dots are colored based on region
         .range([450, 50])
 
     // Scale for the speed attribute, mapping to a radius range
-   /* var speedScale = d3.scaleLinear()
-        .domain(d3.extent(data, d => d.speed))
-        .range([3, 10]);*/
+    var costScale = d3.scaleLinear()
+        .domain(d3.extent(csv, d => d.Cost))
+        .range([2, 6]);
 
     var svg = d3.select('svg');
 
@@ -133,13 +133,13 @@ Dots are colored based on region
     .append("circle")
     .attr("cx", function (d) { return scaleAccept(d.AcceptanceRate); } )
     .attr("cy", function (d) { return scaleSAT(d.SATScore); } )
-    .attr("r", 5)
-      //.attr("r", function (d) { return scaleSpeed(d.Speed); })
+    //.attr("r", 5)
+    .attr("r", function (d) { return scaleCost(d.Cost); })
     //.style("fill" ,"steelblue")
   //  .style('fill', function(d) {
     //    return d.Speed > highSpeed ? '#FFD700' : 'steelblue';
    // })
-    //.style("opacity" ,"0.7")
+    .style("opacity" ,"0.7")
     .on('mouseover', function(event, i) {
         const a = csv[i]; // Use 'i' as an index to access the correct object
         //console.log(csv)
@@ -151,7 +151,7 @@ Dots are colored based on region
         // TO-DO: Style the tooltip correctly.
         var htmlText = "";
        // if (d["Type 2"] == '') {
-        htmlText = "<b>" + i.Name + "</b><br\>" + "Cost: $" + i.Cost;
+        htmlText = "<b>" + i.Name + "</b><br\>" + "Region: " + i.Region+ "</b><br\>" + "Cost: $" + i.Cost;
       //  } else {
            // htmlText = "<b>" + d.Name + "</b><br\>" + "Type 1: " + d["Type 1"] + "<br\>" + "Type 2: " + d["Type 2"];
        // }
