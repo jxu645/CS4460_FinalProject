@@ -397,13 +397,6 @@ function updateFilteredData() {
 
 // Update Chart
 function updateChart(filteredData) {
-    // Load and filter the data based on the filterKey (for now, no filtering)
-    // var filteredRegions;
-
-    // if (filterKey === 'all-regions')
-    //     filteredRegions = colleges.filter(d => d.Region !== filterKey);
-    // else filteredRegions = colleges.filter(d => d.Region === filterKey);
-
     const totalHeight = filteredData.length * (barHeight + barSpacing) + padding.b + padding.t + 10;
 
     // Set the SVG height to fit all bars
@@ -421,30 +414,32 @@ function updateChart(filteredData) {
     // Bars for charts
     var bars = chartGroup.selectAll('.bar')
         .data(filteredData, d => d.Name);
+
     // Enter
     bars.enter()
         .append('rect')
         .attr('class', 'bar')
         .attr('height', barHeight)
         .attr("fill", d => assignColor(d.Region))
-        .attr('width', d => xScale(d.Cost))
-        .attr('y', (d, i) => {
-            const yPosition = i * (barHeight + barSpacing) + 10;
-            return yPosition < totalHeight ? yPosition : -9999;
-        });
+        .attr('y', (d, i) => i * (barHeight + barSpacing) + 10)
+        .attr('width', 0) // Initial width
+        .transition() // Transition for enter animation
+        .duration(1000)
+        .attr('width', d => xScale(d.Cost)); // Final width
+
     // Update
-    bars.attr('width', d => xScale(d.Cost))
-        .attr('y', (d, i) => {
-            const yPosition = i * (barHeight + barSpacing) + 10;
-            return yPosition < totalHeight ? yPosition : -9999;
-        });
+    bars.transition() // Transition for updates
+        .duration(1000)
+        .attr('width', d => xScale(d.Cost))
+        .attr('y', (d, i) => i * (barHeight + barSpacing) + 10);
+
     // Exit
     bars.exit().remove();
-
 
     // Text labels for bars
     var labels = chartGroup.selectAll('.label')
         .data(filteredData, d => d.Name);
+
     // Enter
     labels.enter()
         .append('text')
@@ -453,41 +448,48 @@ function updateChart(filteredData) {
         .attr('x', -5)
         .attr('dy', '0.3em')
         .attr('text-anchor', 'end')
-        .attr('y', (d, i) => {
-            const yPosition = i * (barHeight + barSpacing) + 18;
-            return yPosition < totalHeight ? yPosition : -9999;
-        })
+        .attr('y', (d, i) => i * (barHeight + barSpacing) + 18)
         .text(d => d.Name);
+
     // Update
-    labels.attr('y', (d, i) => {
-        const yPosition = i * (barHeight + barSpacing) + 18;
-        return yPosition < totalHeight ? yPosition : -9999;
-    })
+    labels.transition() 
+        .duration(1000)
+        .attr('y', (d, i) => i * (barHeight + barSpacing) + 18)
         .text(d => d.Name);
+
     // Exit
     labels.exit().remove();
 
     // Price labels on bars
     var priceLabels = chartGroup.selectAll('.price-label')
         .data(filteredData, d => d.Name);
+
     // Enter
     priceLabels.enter()
         .append('text')
         .attr('class', 'price-label')
-        .attr('x', d => xScale(d.Cost) - 5) // Near the end of the bar
-        .attr('y', (d, i) => i * (barHeight + barSpacing) + barHeight / 2 + 11) // Vertically centered
+        .attr('x', 0) 
+        .attr('y', (d, i) => i * (barHeight + barSpacing) + barHeight / 2 + 11)
         .attr('text-anchor', 'end')
-        .style('fill', 'white') 
+        .style('fill', 'white')
         .style('font-size', '12px')
         .style('dominant-baseline', 'middle')
-        .text(d => `$${d3.format(",.0f")(d.Cost)}`);
+        .text(d => `$${d3.format(",.0f")(d.Cost)}`)
+        .transition() 
+        .duration(1000)
+        .attr('x', d => xScale(d.Cost) - 5); 
+
     // Update
-    priceLabels.attr('x', d => xScale(d.Cost) - 5)
+    priceLabels.transition() 
+        .duration(1000)
+        .attr('x', d => xScale(d.Cost) - 5)
         .attr('y', (d, i) => i * (barHeight + barSpacing) + barHeight / 2 + 10)
         .text(d => `$${d3.format(",.0f")(d.Cost)}`);
+
     // Exit
     priceLabels.exit().remove();
 }
+
 
 const assignColor = d3.scaleOrdinal()
     .domain(["Far West", "Great Lakes", "Great Plains", "Mid-Atlantic",
