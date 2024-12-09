@@ -10,6 +10,6 @@ Jessica Liao & Jessie Xu
 2. **Start a local server**
    Type the following command in the terminal:
    ```bash
-   cd /path/to/project
+   python -m http.server 8080
 3. **Access project in the browser**
    Open any browser and navigate to: http://localhost:8080
