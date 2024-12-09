@@ -173,6 +173,8 @@ Dots are colored based on region
     
     chart2.append("text")
     .attr("transform", "translate(175,40)") 
+    .style("font-size", "13px")
+    .style("font-family", "Georgia")
     .text("Colleges Acceptance Rate vs SAT Average");
     
 
@@ -337,7 +339,7 @@ Dots are colored based on region
 
 
 
-
+    //***************** Chart 1 ******************//
     console.log(csv);
     xScale.domain([0, d3.max(colleges, function (d) { return d.Cost; })]);
 
@@ -354,11 +356,9 @@ Dots are colored based on region
         .attr("transform", "translate(-6, 5)");
 
     updateChart(colleges);
-    //console.log(csv);
 })
 
 // Logic that handles dropdowns
-
 function onRegionChanged() {
     updateFilteredData();
 }
@@ -418,10 +418,10 @@ function updateChart(filteredData) {
     chart1.select(".axisTitle")
         .attr("y", totalHeight + 15);
 
+    // Bars for charts
     var bars = chartGroup.selectAll('.bar')
         .data(filteredData, d => d.Name);
-
-    //enter
+    // Enter
     bars.enter()
         .append('rect')
         .attr('class', 'bar')
@@ -432,20 +432,20 @@ function updateChart(filteredData) {
             const yPosition = i * (barHeight + barSpacing) + 10;
             return yPosition < totalHeight ? yPosition : -9999;
         });
-    //update
+    // Update
     bars.attr('width', d => xScale(d.Cost))
         .attr('y', (d, i) => {
             const yPosition = i * (barHeight + barSpacing) + 10;
             return yPosition < totalHeight ? yPosition : -9999;
         });
-    //exit
+    // Exit
     bars.exit().remove();
 
 
     // Text labels for bars
     var labels = chartGroup.selectAll('.label')
         .data(filteredData, d => d.Name);
-    //enter
+    // Enter
     labels.enter()
         .append('text')
         .attr('class', 'label')
@@ -458,14 +458,35 @@ function updateChart(filteredData) {
             return yPosition < totalHeight ? yPosition : -9999;
         })
         .text(d => d.Name);
-    //update
+    // Update
     labels.attr('y', (d, i) => {
         const yPosition = i * (barHeight + barSpacing) + 18;
         return yPosition < totalHeight ? yPosition : -9999;
     })
         .text(d => d.Name);
-    //exit
+    // Exit
     labels.exit().remove();
+
+    // Price labels on bars
+    var priceLabels = chartGroup.selectAll('.price-label')
+        .data(filteredData, d => d.Name);
+    // Enter
+    priceLabels.enter()
+        .append('text')
+        .attr('class', 'price-label')
+        .attr('x', d => xScale(d.Cost) - 5) // Near the end of the bar
+        .attr('y', (d, i) => i * (barHeight + barSpacing) + barHeight / 2 + 11) // Vertically centered
+        .attr('text-anchor', 'end')
+        .style('fill', 'white') 
+        .style('font-size', '12px')
+        .style('dominant-baseline', 'middle')
+        .text(d => `$${d3.format(",.0f")(d.Cost)}`);
+    // Update
+    priceLabels.attr('x', d => xScale(d.Cost) - 5)
+        .attr('y', (d, i) => i * (barHeight + barSpacing) + barHeight / 2 + 10)
+        .text(d => `$${d3.format(",.0f")(d.Cost)}`);
+    // Exit
+    priceLabels.exit().remove();
 }
 
 const assignColor = d3.scaleOrdinal()
